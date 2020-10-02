@@ -12,10 +12,11 @@
 
 # version: "3.2"
 services:
+
   zero:
     image: dgraph/dgraph:latest
     volumes:
-      - /tmp/data:/dgraph
+      - data:/dgraph
     ports:
       - 5080:5080
       - 6080:6080
@@ -24,7 +25,7 @@ services:
   alpha:
     image: dgraph/dgraph:latest
     volumes:
-      - /tmp/data:/dgraph
+      - data:/dgraph
     ports:
       - 8080:8080
       - 9080:9080
@@ -35,9 +36,17 @@ services:
     ports:
       - 8000:8000
     command: dgraph-ratel
-  frontend:
-    ports:
-      - 3000:3000
-    build: ./frontend
-    volumes:
-      - ./frontend:/app
+
+volumes:
+  data:
+
+  # frontend currently configured for using local volume
+  # but react storefront doesn't automatically recompile with edits
+  # so am running just the db in a container and using app locally
+  # use COPY frontend/src/:/app/ in Dockerfile instead of volumes when ready
+  # frontend:
+  #   build: ./frontend
+  #   ports:
+  #     - 3000:3000
+  #   volumes:
+  #     - ./frontend/src:/app/
